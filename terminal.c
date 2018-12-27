@@ -6,7 +6,7 @@
 #include "lib/show_files.h"
 
 const char* selectDir(char path[]);
-const char* checkParameters(char path[]);
+const char* checkParameters(char path[],char actualDir[]);
 
 int main(){
 	char *actualDir; 
@@ -14,12 +14,14 @@ int main(){
 	char query[255];
 	printf("%s:> ",actualDir);
 	
-	while(fgets(query,255,stdin) != NULL){
+	strtok(fgets(query,255,stdin),"\n");
+	while(strcmp(query,"EXIT") != 0){
 		if(strstr(query,"DIR") != NULL){
-			if(strcasecmp(query,"DIR") == 0){
+			if(strcmp(query,"DIR") == 0){
 				system(showFiles(selectDir(actualDir)));
 			}else{
-				system(showFiles(checkParameters(query)));
+				system(showFiles(checkParameters(query,actualDir)));
+				printf("%s",checkParameters(query,actualDir));
 			}
 		}else if(strcmp(query,"B:") == 0){
 			actualDir = "B";
@@ -31,7 +33,7 @@ int main(){
 		}
 		printf("%s:> ",actualDir);
 		
-		fgets(query,255,stdin);
+		strtok(fgets(query,255,stdin),"\n");
 	}
 	return 0;
 	
@@ -49,13 +51,22 @@ const char* selectDir(char dir[]){
 	return "";
 }
 
-const char* checkParameters(char dir[]){
-	if(strstr(dir,"A") != NULL){
+const char* checkParameters(char path[],char actualDir[]){
+	if(strstr(path,"A:") != NULL){
 		return "./carpetaA";
-	}else if(strstr(dir,"B") != NULL){
+	}else if(strstr(path,"B:") != NULL){
 		return "./carpetaB";
 	}else{
-		return "";
+		
+		char pathFinal[255];
+		char barra[1] = "/";
+		strcpy(pathFinal,selectDir(actualDir));
+		strcpy(pathFinal,barra);
+		
+		
+		char* final = pathFinal;
+		return final;
+
 	}
 	
 	return "";
