@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 
-#include "lib/show_files.h"
+#include "lib/dir.h"
 
-const char* selectDir(char path[]);
-const char* checkParameters(char path[],char actualDir[]);
+char* selectDir(char path[]);
+char* checkParameters(char path[],char actualDir[]);
 void substring(char s[], char sub[], int p, int l);
 
 
@@ -41,19 +41,23 @@ int main(){
 	
 }
 
-const char* selectDir(char dir[]){
+char* selectDir(char dir[]){
+	
+	char* pathDir = ""; 
 	if(strcmp(dir,"A") == 0){
-		return "./carpetaA";
+		pathDir = "./carpetaA";
+		return pathDir;
 	}else if(strcmp(dir,"B") == 0){
-		return "./carpetaB";
+		pathDir = "./carpetaB";
+		return pathDir;
 	}else{
-		return "";
+		return pathDir;
 	}
 	
-	return "";
+	return pathDir;
 }
 
-const char* checkParameters(char path[],char actualDir[]){
+char* checkParameters(char path[],char actualDir[]){
 	if(strstr(path,"A:") != NULL){
 		return "./carpetaA";
 	}else if(strstr(path,"B:") != NULL){
