@@ -23,7 +23,7 @@ int main(){
 				system(showFiles(selectDir(actualDir)));
 			}else{
 				system(showFiles(checkParameters(query,actualDir)));
-				printf("%s",showFiles(checkParameters(query,actualDir)));
+				//printf("\n%s",showFiles(checkParameters(query,actualDir)));
 			}
 		}else if(strcmp(query,"B:") == 0){
 			actualDir = "B";
@@ -70,7 +70,9 @@ const char* checkParameters(char path[],char actualDir[]){
         strncpy(filename1, subPath, sizeof(filename1));
         strcat(filename,filename1);
         //printf("Filename is %s\n", filename);
-        return filename;
+        
+        char* final = filename;
+        return final;
 
 	}
 	
