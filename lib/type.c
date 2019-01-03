@@ -31,19 +31,20 @@ char* selectDirType(char dir[]){
 
 char* checkParametersType(char path[],char actualDir[]){
 	char* auxPath;
+	char subPath[strlen(path)];
 	if(strstr(path,"A:") != NULL){
 		auxPath = "./A";
+		substringType(path,subPath,8,strlen(path));
 	}else if(strstr(path,"B:") != NULL){
 		auxPath = "./B";
+		substringType(path,subPath,8,strlen(path));
 	}else{
 		auxPath = selectDirType(actualDir);
+		substringType(path,subPath,6,strlen(path));
 	}
-	
-	char subPath[strlen(path)];
 	char filename[128];
 	char filename1[128];
 	char *barra="/";
-	substringType(path,subPath,8,strlen(path));
 	strncpy(filename, auxPath, sizeof(filename));
 	strncat(filename, barra, sizeof(filename) );
 	strncpy(filename1, subPath, sizeof(filename1));

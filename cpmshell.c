@@ -28,7 +28,6 @@ printf("C2 %c",c2);
 			system(command);
 		}else if(strstr(query,"TYPE") != NULL){
 			char command[100];
-			printf("%s",use_type(query,actualDir));
 			sprintf(command, "%s", use_type(query,actualDir));
 			system(command);
 		}else if(strcmp(query,"A:") == 0){
