@@ -28,7 +28,13 @@ int main(){
 			actualDir = "B";
 		}else if(strcmp(query,"A:") == 0){
 			actualDir = "A";
-		}else{
+		}else if(strcmp(query,"HELP") == 0){
+            char command[100];
+            // cat lib/help.txt
+            //sprintf(command, "%s", use_dir(query,actualDir));
+			system("cat lib/help.txt");
+        }
+        else{
 			printf("no se\n");
 			printf("%s",query);
 		}

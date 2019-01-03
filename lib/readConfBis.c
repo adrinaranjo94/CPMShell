@@ -1,8 +1,8 @@
 //
-//  readConf.c
+//  readConfBis.c
 //  
 //
-//  Created by Sergio Redondo on 27/12/2018.
+//  Created by Carlos Rodriguez on 27/12/2018.
 //
 
 #define _GNU_SOURCE
@@ -16,10 +16,10 @@ char c2 = ' ';
 
 int main(void)
 {
-    c1 = 'a';
-    printf("%c",c1);
     readConf();
     
+    printf("%c\n",c1);
+    printf("%c\n",c2);
     
     return 0;
 }
@@ -37,20 +37,17 @@ void readConf(){
     }
     int i = 0;
     while ((read = getline(&line, &len, fp)) != -1) {
-        printf("Retrieved line of length %zu:\n", read);
-        printf("%s", line);
-        printf("%c", line[0]);
-        if(i = 0){
+        if(i == 0){
             c1 = line[0];
             i++;
         }else{
             c2 = line[0];
         }
     }
-    printf("\n");
     fclose(fp);
     if (line)
         free(line);
-    exit(EXIT_SUCCESS);
+    
+    return;
     
 }
