@@ -4,6 +4,7 @@
 
 
 #include "lib/dir.h"
+#include "lib/type.h"
 
 
 int main(){
@@ -17,6 +18,11 @@ int main(){
 		if(strstr(query,"DIR") != NULL){
 			char command[100];
 			sprintf(command, "%s", use_dir(query,actualDir));
+			system(command);
+		}else if(strstr(query,"TYPE") != NULL){
+			char command[100];
+			printf("%s",use_type(query,actualDir));
+			sprintf(command, "%s", use_type(query,actualDir));
 			system(command);
 		}else if(strcmp(query,"B:") == 0){
 			actualDir = "B";

@@ -1,7 +1,9 @@
 
-#include "dir.h"
 
-void substring(char s[], char sub[], int p, int l) {
+#include "dir.h"
+#include <stdio.h>
+
+void substringType(char s[], char sub[], int p, int l) {
     int c = 0;
     
     while (c < l) {
@@ -11,7 +13,7 @@ void substring(char s[], char sub[], int p, int l) {
     sub[c] = '\0';
 }
 
-char* selectDir(char dir[]){
+char* selectDirType(char dir[]){
 	
 	char *pathDir = ""; 
 	if(strcmp(dir,"A") == 0){
@@ -27,35 +29,37 @@ char* selectDir(char dir[]){
 	return pathDir;
 }
 
-char* checkParameters(char path[],char actualDir[]){
+char* checkParametersType(char path[],char actualDir[]){
 	char* auxPath;
 	if(strcmp(path,"A:") == 0){
 		auxPath = "./A";
 	}else if(strcmp(path,"B:") == 0){
 		auxPath = "./B";
 	}else{
-		auxPath = selectDir(actualDir);
+		auxPath = selectDirType(actualDir);
 	}
 	
 	char subPath[strlen(path)];
 	char filename[128];
 	char filename1[128];
 	char *barra="/";
-	substring(path,subPath,5,strlen(path));
+	substringType(path,subPath,6,strlen(path));
 	strncpy(filename, auxPath, sizeof(filename));
 	strncat(filename, barra, sizeof(filename) );
 	strncpy(filename1, subPath, sizeof(filename1));
 	strcat(filename,filename1);
 	
 	char* final = filename;
+	printf("Final con auxpath: %s\n",final);
+	printf("PATH: %s\n",path);
 	return final;
 }
 
-char* showFiles(char dir[]){
+char* methodType(char dir[]){
 	char rpath[255];
 	char ldir[255];
 	char lFinal[255];
-	strncpy(rpath, "ls -l ", sizeof(rpath));
+	strncpy(rpath, "cat ", sizeof(rpath));
     strncpy(ldir, dir, sizeof(ldir));
     strncpy(lFinal,rpath,sizeof(lFinal));
     strncat(lFinal,ldir,sizeof(lFinal));
@@ -64,11 +68,11 @@ char* showFiles(char dir[]){
 	return afinal;
 }
 
-char* use_dir(char query[],char actualDir[]){
-	if(strcmp(query,"DIR") == 0){
-		return showFiles(selectDir(actualDir));
+char* use_type(char query[],char actualDir[]){
+	if(strcmp(query,"TYPE") == 0){
+		return "cat ";
 	}else{
-		return showFiles(checkParameters(query,actualDir));
+		return methodType(checkParametersType(query,actualDir));
 	}
 	
 }
