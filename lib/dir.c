@@ -29,9 +29,9 @@ char* selectDir(char dir[]){
 
 char* checkParameters(char path[],char actualDir[]){
 	char* auxPath;
-	if(strcmp(path,"A:") == 0){
+	if(strstr(path,"A:") != NULL){
 		auxPath = "./A";
-	}else if(strcmp(path,"B:") == 0){
+	}else if(strstr(path,"B:") != NULL){
 		auxPath = "./B";
 	}else{
 		auxPath = selectDir(actualDir);
@@ -41,7 +41,7 @@ char* checkParameters(char path[],char actualDir[]){
 	char filename[128];
 	char filename1[128];
 	char *barra="/";
-	substring(path,subPath,5,strlen(path));
+	substring(path,subPath,7,strlen(path));
 	strncpy(filename, auxPath, sizeof(filename));
 	strncat(filename, barra, sizeof(filename) );
 	strncpy(filename1, subPath, sizeof(filename1));

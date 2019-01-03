@@ -31,9 +31,9 @@ char* selectDirType(char dir[]){
 
 char* checkParametersType(char path[],char actualDir[]){
 	char* auxPath;
-	if(strcmp(path,"A:") == 0){
+	if(strstr(path,"A:") != NULL){
 		auxPath = "./A";
-	}else if(strcmp(path,"B:") == 0){
+	}else if(strstr(path,"B:") != NULL){
 		auxPath = "./B";
 	}else{
 		auxPath = selectDirType(actualDir);
@@ -43,15 +43,13 @@ char* checkParametersType(char path[],char actualDir[]){
 	char filename[128];
 	char filename1[128];
 	char *barra="/";
-	substringType(path,subPath,6,strlen(path));
+	substringType(path,subPath,8,strlen(path));
 	strncpy(filename, auxPath, sizeof(filename));
 	strncat(filename, barra, sizeof(filename) );
 	strncpy(filename1, subPath, sizeof(filename1));
 	strcat(filename,filename1);
 	
 	char* final = filename;
-	printf("Final con auxpath: %s\n",final);
-	printf("PATH: %s\n",path);
 	return final;
 }
 
