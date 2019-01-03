@@ -15,9 +15,9 @@ int main(){
 	strtok(fgets(query,255,stdin),"\n");
 	while(strcmp(query,"EXIT") != 0){
 		if(strstr(query,"DIR") != NULL){
-			char* command = use_dir(query,actualDir);
-			printf("%s",command);
-			system(strtok(command,"\n"));
+			char command[100];
+			sprintf(command, "%s", use_dir(query,actualDir));
+			system(command);
 		}else if(strcmp(query,"B:") == 0){
 			actualDir = "B";
 		}else if(strcmp(query,"A:") == 0){
