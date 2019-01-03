@@ -13,6 +13,8 @@ void readConf();
 
 int main(){
     readConf();
+printf("C1 %c",c1);
+printf("C2 %c",c2);
 	char *actualDir; 
 	actualDir = "A";
 	char query[255];
@@ -29,9 +31,9 @@ int main(){
 			printf("%s",use_type(query,actualDir));
 			sprintf(command, "%s", use_type(query,actualDir));
 			system(command);
-		}else if(strcmp(query,"B:") == 0){
-			actualDir = "B";
 		}else if(strcmp(query,"A:") == 0){
+			actualDir = "B";
+		}else if(strcmp(query,"B:") == 0){
 			actualDir = "A";
 		}else if(strcmp(query,"HELP") == 0){
 			system("cat lib/help.txt");
@@ -49,7 +51,7 @@ int main(){
 
 void readConf(){
     FILE * fp;
-    fp = fopen("./.cmpconfig.txt", "r");
+    fp = fopen("lib/.cmpconfig.txt", "r");
     char * line = NULL;
     size_t len = 0;
     ssize_t read;
@@ -60,21 +62,17 @@ void readConf(){
     }
     int i = 0;
     while ((read = getline(&line, &len, fp)) != -1) {
-        printf("Retrieved line of length %zu:\n", read);
-        printf("%s", line);
-        printf("%c", line[0]);
-        if(i = 0){
+        if(i == 0){
             c1 = line[0];
             i++;
         }else{
             c2 = line[0];
         }
     }
-    printf("\n");
     fclose(fp);
     if (line)
         free(line);
-    exit(EXIT_SUCCESS);
+    
+    return;
     
 }
-
