@@ -1,0 +1,10 @@
+Comandos de la shell
+--------------------
+--------------------
+COPY	Copia el fichero o ficheros de origen en destino
+DIR	Muestra los ficheros de la unidad actual
+ERA	Borra el fichero o grupo de ficheros
+EXIT	Cierra la shell
+REN	Renombra un fichero
+RUN	Lanza un ejecutable Linux
+TYPE	Vuelca por pantalla el contenido de un fichero
