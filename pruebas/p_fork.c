@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int main() 
 { 
@@ -29,7 +30,10 @@ int main()
         // We are the child process, so replace the process with a new executable. 
         execl(progname, progname, argument1, argument2, (char *)NULL); 
         //printf("I'm %d: myargument is %s & %s\n", getpid(), argument1, argument2);
-
+        signal();
+    }else{
+        wait()
+        printf("holi hijito mio");
     } 
     // The parent process continues from here. 
 
