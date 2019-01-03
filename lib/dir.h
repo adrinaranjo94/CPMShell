@@ -1,18 +1,14 @@
-#define _dir_
-
 #include <string.h>
+#include <stdlib.h>
 
-char * showFiles(char dir[]){
-	char rpath[255];
-	char ldir[255];
-	char lFinal[255];
-	strncpy(rpath, "ls -l ", sizeof(rpath));
-    strncpy(ldir, dir, sizeof(ldir));
-    strncpy(lFinal,rpath,sizeof(lFinal));
-    strncat(lFinal,ldir,sizeof(lFinal));
+void substring(char s[], char sub[], int p, int l);
 
-	char* afinal = lFinal;
-	return afinal;
-}
+char *selectDir(char dir[]);
+
+char *checkParameters(char path[],char actualDir[]);
+
+char *showFiles(char dir[]);
+
+char* use_dir(char query[],char actualDir[]);
 
 
