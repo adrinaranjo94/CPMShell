@@ -2,6 +2,8 @@
 #include "era.h"
 #include <stdio.h>
 
+char auxDir[4];
+
 void substringEra(char s[], char sub[], int p, int l) {
     int c = 0;
     

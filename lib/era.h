@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-char auxDir[3];
+char auxDir[4];
 
 void substringEra(char s[], char sub[], int p, int l);
 

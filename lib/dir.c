@@ -2,7 +2,7 @@
 #include "dir.h"
 #include <stdio.h>
 
-char auxDir[3];
+char auxDir[4];
 
 void substring(char s[], char sub[], int p, int l) {
     int c = 0;

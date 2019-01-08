@@ -32,7 +32,7 @@ int main()
         //printf("I'm %d: myargument is %s & %s\n", getpid(), argument1, argument2);
         signal();
     }else{
-        wait()
+        wait();
         printf("holi hijito mio");
     } 
     // The parent process continues from here. 

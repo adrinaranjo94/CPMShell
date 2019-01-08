@@ -10,10 +10,11 @@
 #include "lib/dir.h"
 #include "lib/type.h"
 #include "lib/era.h"
+#include "lib/copy.h"
 
 char c1 = ' ';
 char c2 = ' ';
-char auxDir[3];
+char auxDir[4];
 
 void readConf();
 
@@ -53,6 +54,16 @@ int main(){
             if (fork() == 0) {
 			    char command[100];
 			    sprintf(command, "%s", use_era(query,actualDir,c1,c2));
+			    system(command);
+            } else {
+                wait(NULL);
+                kill(0,SIGTERM);
+            }
+
+		}else if(strstr(query,"COPY") != NULL){
+            if (fork() == 0) {
+			    char command[100];
+			    sprintf(command, "%s", use_copy(query,actualDir,c1,c2));
 			    system(command);
             } else {
                 wait(NULL);

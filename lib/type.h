@@ -1,6 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+char auxDir[4];
+
 void substringType(char s[], char sub[], int p, int l);
 
 char* getDirType(char dir);
