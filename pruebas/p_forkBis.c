@@ -6,12 +6,14 @@
 
 int main() 
 {   
-
-    if (fork() == 0) { 
+    int* test;
+    test = 1;
+    if (fork() == 0) {
         system("ls");
+        test = 0;
     } else {
         wait(NULL);
-        printf("holi hijito mio");
+        printf("holi hijito mio %d", *test);
     }
 
  return 0; 
