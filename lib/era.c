@@ -1,6 +1,6 @@
 
-
 #include "era.h"
+#include <stdio.h>
 
 void substringEra(char s[], char sub[], int p, int l) {
     int c = 0;
@@ -12,13 +12,27 @@ void substringEra(char s[], char sub[], int p, int l) {
     sub[c] = '\0';
 }
 
-char* selectDirEra(char dir[]){
+char* getDirEra(char dir){
+	sprintf(auxDir,"%c",dir);
+	
+	return auxDir;
+	
+}
+
+char* getDirEraFull(char dir){
+	sprintf(auxDir,"%c:",dir);
+	
+	return auxDir;
+	
+}
+
+char* selectDirEra(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
-	if(strcmp(dir,"A") == 0){
+	if(strcmp(dir,getDirEra(dir1)) == 0){
 		pathDir = "./A";
 		return pathDir;
-	}else if(strcmp(dir,"B") == 0){
+	}else if(strcmp(dir,getDirEra(dir2)) == 0){
 		pathDir = "./B";
 		return pathDir;
 	}else{
@@ -28,17 +42,17 @@ char* selectDirEra(char dir[]){
 	return pathDir;
 }
 
-char* checkParametersEra(char path[],char actualDir[]){
+char* checkParametersEra(char path[],char actualDir[],char dir1, char dir2){
 	char* auxPath;
 	char subPath[strlen(path)];
-	if(strstr(path,"A:") != NULL){
+	if(strstr(path,getDirEraFull(dir1)) != NULL){
 		auxPath = "./A";
 		substringEra(path,subPath,7,strlen(path));
-	}else if(strstr(path,"B:") != NULL){
+	}else if(strstr(path,getDirEraFull(dir2)) != NULL){
 		auxPath = "./B";
 		substringEra(path,subPath,7,strlen(path));
 	}else{
-		auxPath = selectDirEra(actualDir);
+		auxPath = selectDirEra(actualDir,dir1,dir2);
 		substringEra(path,subPath,5,strlen(path));
 	}
 	char filename[128];
@@ -66,11 +80,11 @@ char* methodEra(char dir[]){
 	return afinal;
 }
 
-char* use_era(char query[],char actualDir[]){
-	if(strcmp(query,"TYPE") == 0){
+char* use_era(char query[],char actualDir[],char dir1, char dir2){
+	if(strcmp(query,"ERA") == 0){
 		return "rm ";
 	}else{
-		return methodEra(checkParametersEra(query,actualDir));
+		return methodEra(checkParametersEra(query,actualDir,dir1,dir2));
 	}
 	
 }
