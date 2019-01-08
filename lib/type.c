@@ -1,6 +1,8 @@
 
-
 #include "type.h"
+#include <stdio.h>
+
+char auxDir[3];
 
 void substringType(char s[], char sub[], int p, int l) {
     int c = 0;
@@ -12,13 +14,27 @@ void substringType(char s[], char sub[], int p, int l) {
     sub[c] = '\0';
 }
 
-char* selectDirType(char dir[]){
+char* getDirType(char dir){
+	sprintf(auxDir,"%c",dir);
+	
+	return auxDir;
+	
+}
+
+char* getDirTypeFull(char dir){
+	sprintf(auxDir,"%c:",dir);
+	
+	return auxDir;
+	
+}
+
+char* selectDirType(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
-	if(strcmp(dir,"A") == 0){
+	if(strcmp(dir,getDirType(dir1)) == 0){
 		pathDir = "./A";
 		return pathDir;
-	}else if(strcmp(dir,"B") == 0){
+	}else if(strcmp(dir,getDirType(dir2)) == 0){
 		pathDir = "./B";
 		return pathDir;
 	}else{
@@ -28,17 +44,17 @@ char* selectDirType(char dir[]){
 	return pathDir;
 }
 
-char* checkParametersType(char path[],char actualDir[]){
+char* checkParametersType(char path[],char actualDir[],char dir1, char dir2){
 	char* auxPath;
 	char subPath[strlen(path)];
-	if(strstr(path,"A:") != NULL){
+	if(strstr(path,getDirTypeFull(dir1)) != NULL){
 		auxPath = "./A";
 		substringType(path,subPath,8,strlen(path));
-	}else if(strstr(path,"B:") != NULL){
+	}else if(strstr(path,getDirTypeFull(dir2)) != NULL){
 		auxPath = "./B";
 		substringType(path,subPath,8,strlen(path));
 	}else{
-		auxPath = selectDirType(actualDir);
+		auxPath = selectDirType(actualDir,dir1,dir2);
 		substringType(path,subPath,6,strlen(path));
 	}
 	char filename[128];
@@ -66,11 +82,11 @@ char* methodType(char dir[]){
 	return afinal;
 }
 
-char* use_type(char query[],char actualDir[]){
+char* use_type(char query[],char actualDir[],char dir1, char dir2){
 	if(strcmp(query,"TYPE") == 0){
 		return "cat ";
 	}else{
-		return methodType(checkParametersType(query,actualDir));
+		return methodType(checkParametersType(query,actualDir,dir1,dir2));
 	}
 	
 }

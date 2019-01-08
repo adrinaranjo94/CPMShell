@@ -43,7 +43,7 @@ int main(){
 		}else if(strstr(query,"TYPE") != NULL){
             if (fork() == 0) {
 			    char command[100];
-			    sprintf(command, "%s", use_type(query,actualDir));
+			    sprintf(command, "%s", use_type(query,actualDir,c1,c2));
     			system(command);
             } else {
                 wait(NULL);
