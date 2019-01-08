@@ -56,7 +56,7 @@ int main(){
                 system(command);
             }else if(strstr(query,"ERA") != NULL){
                 char command[100];
-                sprintf(command, "%s", use_era(query,actualDir));
+			    sprintf(command, "%s", use_era(query,actualDir,c1,c2));
                 system(command);
             }else if(strcmp(query,getDir(c1)) == 0){
                 //TODO:
