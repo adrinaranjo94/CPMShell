@@ -52,7 +52,7 @@ int main(){
 		}else if(strstr(query,"ERA") != NULL){
             if (fork() == 0) {
 			    char command[100];
-			    sprintf(command, "%s", use_era(query,actualDir));
+			    sprintf(command, "%s", use_era(query,actualDir,c1,c2));
 			    system(command);
             } else {
                 wait(NULL);
