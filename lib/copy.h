@@ -2,7 +2,7 @@
 
 char auxDir[4];
 
-char *replaceWord(const char *s, const char *oldW, const char *newW);
+char *replaceWordCopy(const char *s, const char *oldW, const char *newW);
 
 void substring(char s[], char sub[], int p, int l);
 

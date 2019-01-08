@@ -6,7 +6,7 @@
 
 char auxDir[4];
 
-char *replaceWordCopy(const char *s, const char *oldW,const char *newW) { 
+char *replaceWordRen(const char *s, const char *oldW,const char *newW) { 
     char *result; 
     int i, cnt = 0; 
     int newWlen = strlen(newW); 
@@ -39,34 +39,34 @@ char *replaceWordCopy(const char *s, const char *oldW,const char *newW) {
     return result; 
 } 
 
-char* getDirCopy(char dir){
+char* getDirRen(char dir){
 	sprintf(auxDir,"%c",dir);
 	
 	return auxDir;
 	
 }
 
-char* getDirCopyFull(char dir){
+char* getDirRenFull(char dir){
 	sprintf(auxDir,"%c:",dir);
 	
 	return auxDir;
 	
 }
 
-char* getDirCopySpaceFull(char dir){
+char* getDirRenSpaceFull(char dir){
 	sprintf(auxDir," %c:",dir);
 	
 	return auxDir;
 	
 }
 
-char* selectDirCopy(char dir[],char dir1, char dir2){
+char* selectDirRen(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
-	if(strcmp(dir,getDirCopy(dir1)) == 0){
+	if(strcmp(dir,getDirRen(dir1)) == 0){
 		pathDir = "./A";
 		return pathDir;
-	}else if(strcmp(dir,getDirCopy(dir2)) == 0){
+	}else if(strcmp(dir,getDirRen(dir2)) == 0){
 		pathDir = "./B";
 		return pathDir;
 	}else{
@@ -76,13 +76,13 @@ char* selectDirCopy(char dir[],char dir1, char dir2){
 	return pathDir;
 }
 
-char* selectSecondDirCopy(char dir[],char dir1, char dir2){
+char* selectSecondDirRen(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
-	if(strcmp(dir,getDirCopy(dir1)) == 0){
+	if(strcmp(dir,getDirRen(dir1)) == 0){
 		pathDir = " ./A/";
 		return pathDir;
-	}else if(strcmp(dir,getDirCopy(dir2)) == 0){
+	}else if(strcmp(dir,getDirRen(dir2)) == 0){
 		pathDir = " ./B/";
 		return pathDir;
 	}else{
@@ -92,10 +92,10 @@ char* selectSecondDirCopy(char dir[],char dir1, char dir2){
 	return pathDir;
 }
 
-char* checkParametersCopy(char path[],char actualDir[],char dir1, char dir2){
+char* checkParametersRen(char path[],char actualDir[],char dir1, char dir2){
 	char* auxPath;
 	char subPath[strlen(path)];
-	char auxSubDir[strlen(subPath)];
+	char auxSubRen[strlen(subPath)];
 	char *finalPath;
 	
 	char prueba[2];
@@ -104,42 +104,42 @@ char* checkParametersCopy(char path[],char actualDir[],char dir1, char dir2){
 	char filename1[128];
 	char *barra="/";
 	
-	if(strstr(path,getDirCopyFull(dir1)) != NULL || strstr(path,getDirCopyFull(dir2)) != NULL){
-		substring(path,auxSubDir,6,2);
-		sprintf(prueba,"%s",auxSubDir);
-		if(strcmp(getDirCopyFull(dir1),auxSubDir) == 0){
+	if(strstr(path,getDirRenFull(dir1)) != NULL || strstr(path,getDirRenFull(dir2)) != NULL){
+		substring(path,auxSubRen,5,2);
+		sprintf(prueba,"%s",auxSubRen);
+		if(strcmp(getDirRenFull(dir1),auxSubRen) == 0){
 			auxPath = "./A";
-			substring(path,subPath,8,strlen(path));
+			substring(path,subPath,7,strlen(path));
 			strncpy(filename, auxPath, sizeof(filename));
 			strncat(filename, barra, sizeof(filename) );
-		}else if(strcmp(getDirCopyFull(dir2),auxSubDir) == 0){
+		}else if(strcmp(getDirRenFull(dir2),auxSubRen) == 0){
 			auxPath = "./B";
-			substring(path,subPath,8,strlen(path));
+			substring(path,subPath,7,strlen(path));
 			strncpy(filename, auxPath, sizeof(filename));
 			strncat(filename, barra, sizeof(filename) );
 		}else{
-			auxPath = selectDirCopy(actualDir,dir1,dir2);
-			substring(path,subPath,6,strlen(path));
+			auxPath = selectDirRen(actualDir,dir1,dir2);
+			substring(path,subPath,5,strlen(path));
 			strncpy(filename, auxPath, sizeof(filename));
 			strncat(filename, barra, sizeof(filename) );
 		}
 		
-		if(strstr(subPath,getDirCopySpaceFull(dir1)) !=NULL){
-			finalPath = replaceWordCopy(subPath,getDirCopySpaceFull(dir1)," ./A/");
-		}else if(strstr(subPath,getDirCopySpaceFull(dir2)) != NULL){
-			finalPath = replaceWordCopy(subPath,getDirCopySpaceFull(dir2)," ./B/");
+		if(strstr(subPath,getDirRenSpaceFull(dir1)) !=NULL){
+			finalPath = replaceWordRen(subPath,getDirRenSpaceFull(dir1)," ./A/");
+		}else if(strstr(subPath,getDirRenSpaceFull(dir2)) != NULL){
+			finalPath = replaceWordRen(subPath,getDirRenSpaceFull(dir2)," ./B/");
 		}else{
-			finalPath = replaceWordCopy(subPath," ",selectSecondDirCopy(actualDir,dir1,dir2));
+			finalPath = replaceWordRen(subPath," ",selectSecondDirRen(actualDir,dir1,dir2));
 		}
 		
 		strncpy(filename1, finalPath, sizeof(filename1));
 		strcat(filename,filename1);
 			
 	}else{
-		auxPath = selectDirCopy(actualDir,dir1,dir2);
-		substring(path,subPath,6,strlen(path));
+		auxPath = selectDirRen(actualDir,dir1,dir2);
+		substring(path,subPath,5,strlen(path));
 		
-		finalPath = replaceWordCopy(subPath," ",selectSecondDirCopy(actualDir,dir1,dir2));
+		finalPath = replaceWordRen(subPath," ",selectSecondDirRen(actualDir,dir1,dir2));
 		
 		strncpy(filename, auxPath, sizeof(filename));
 		strncat(filename, barra, sizeof(filename) );
@@ -151,11 +151,11 @@ char* checkParametersCopy(char path[],char actualDir[],char dir1, char dir2){
 	return final;
 }
 
-char* methodCopy(char dir[]){
+char* methodRen(char dir[]){
 	char rpath[255];
 	char ldir[255];
 	char lFinal[255];
-	strncpy(rpath, "cp ", sizeof(rpath));
+	strncpy(rpath, "mv ", sizeof(rpath));
     strncpy(ldir, dir, sizeof(ldir));
     strncpy(lFinal,rpath,sizeof(lFinal));
     strncat(lFinal,ldir,sizeof(lFinal));
@@ -164,11 +164,11 @@ char* methodCopy(char dir[]){
 	return afinal;
 }
 
-char* use_copy(char query[],char actualDir[],char dir1, char dir2){
-	if(strcmp(query,"COPY") == 0){
-		return "cp ";
+char* use_ren(char query[],char actualDir[],char dir1, char dir2){
+	if(strcmp(query,"REN") == 0){
+		return "mv ";
 	}else{
-		return methodCopy(checkParametersCopy(query,actualDir,dir1,dir2));
+		return methodRen(checkParametersRen(query,actualDir,dir1,dir2));
 	}
 }
 

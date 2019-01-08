@@ -11,6 +11,7 @@
 #include "lib/type.h"
 #include "lib/era.h"
 #include "lib/copy.h"
+#include "lib/ren.h"
 
 char c1 = ' ';
 char c2 = ' ';
@@ -64,6 +65,16 @@ int main(){
             if (fork() == 0) {
 			    char command[100];
 			    sprintf(command, "%s", use_copy(query,actualDir,c1,c2));
+			    system(command);
+            } else {
+                wait(NULL);
+                kill(0,SIGTERM);
+            }
+
+		}else if(strstr(query,"REN") != NULL){
+            if (fork() == 0) {
+			    char command[100];
+			    sprintf(command, "%s", use_ren(query,actualDir,c1,c2));
 			    system(command);
             } else {
                 wait(NULL);
