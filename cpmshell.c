@@ -18,8 +18,8 @@ char* getDir(char dir);
 
 int main(){
     readConf();
-//printf("C1 %c",c1);
-//printf("C2 %c",c2);
+	//printf("C1 %c",c1);
+	//printf("C2 %c",c2);
 	char actualDir[2]; 
 	sprintf(actualDir, "%c", c1);
 	char query[255];
@@ -29,7 +29,7 @@ int main(){
 	while(strcmp(query,"EXIT") != 0){
 		if(strstr(query,"DIR") != NULL){
 			char command[100];
-			sprintf(command, "%s", use_dir(query,actualDir));
+			sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
 			system(command);
 		}else if(strstr(query,"TYPE") != NULL){
 			char command[100];
@@ -45,8 +45,7 @@ int main(){
 			sprintf(actualDir, "%c", c2);
 		}else if(strcmp(query,"HELP") == 0){
 			system("cat lib/help.txt");
-        }
-        else{
+        }else{
 			printf("comando desconocido\n");
 			//printf("%s",query);
 		}

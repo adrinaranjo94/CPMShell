@@ -1,14 +1,20 @@
 #include <string.h>
 #include <stdlib.h>
 
+char auxDir[3];
+
 void substring(char s[], char sub[], int p, int l);
 
-char *selectDir(char dir[]);
+char* getDirDir(char dir);
 
-char *checkParameters(char path[],char actualDir[]);
+char* getDirDirFull(char dir);
 
-char *showFiles(char dir[]);
+char* selectDir(char dir[],char dir1, char dir2);
 
-char* use_dir(char query[],char actualDir[]);
+char* checkParameters(char path[],char actualDir[],char dir1, char dir2);
+
+char* showFiles(char dir[]);
+
+char* use_dir(char query[],char actualDir[],char dir1, char dir2);
 
 

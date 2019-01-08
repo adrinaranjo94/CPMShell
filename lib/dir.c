@@ -1,5 +1,8 @@
 
 #include "dir.h"
+#include <stdio.h>
+
+char auxDir[3];
 
 void substring(char s[], char sub[], int p, int l) {
     int c = 0;
@@ -11,13 +14,28 @@ void substring(char s[], char sub[], int p, int l) {
     sub[c] = '\0';
 }
 
-char* selectDir(char dir[]){
+
+char* getDirDir(char dir){
+	sprintf(auxDir,"%c",dir);
+	
+	return auxDir;
+	
+}
+
+char* getDirDirFull(char dir){
+	sprintf(auxDir,"%c:",dir);
+	
+	return auxDir;
+	
+}
+
+char* selectDir(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
-	if(strcmp(dir,"A") == 0){
+	if(strcmp(dir,getDirDir(dir1)) == 0){
 		pathDir = "./A";
 		return pathDir;
-	}else if(strcmp(dir,"B") == 0){
+	}else if(strcmp(dir,getDirDir(dir2)) == 0){
 		pathDir = "./B";
 		return pathDir;
 	}else{
@@ -27,20 +45,20 @@ char* selectDir(char dir[]){
 	return pathDir;
 }
 
-char* checkParameters(char path[],char actualDir[]){
+char* checkParameters(char path[],char actualDir[],char dir1, char dir2){
 	char* auxPath;
 	char subPath[strlen(path)];
-	if(strstr(path,"A:") != NULL){
+	if(strstr(path,getDirDirFull(dir1)) != NULL){
 		auxPath = "./A";
 		substring(path,subPath,7,strlen(path));
-	}else if(strstr(path,"B:") != NULL){
+	}else if(strstr(path,getDirDirFull(dir2)) != NULL){
 		auxPath = "./B";
 		substring(path,subPath,7,strlen(path));
 	}else{
-		auxPath = selectDir(actualDir);
+		auxPath = selectDir(actualDir,dir1,dir2);
 		substring(path,subPath,5,strlen(path));
 	}
-	 
+	
 	char filename[128];
 	char filename1[128];
 	char *barra="/";
@@ -67,11 +85,10 @@ char* showFiles(char dir[]){
 	return afinal;
 }
 
-char* use_dir(char query[],char actualDir[]){
+char* use_dir(char query[],char actualDir[],char dir1, char dir2){
 	if(strcmp(query,"DIR") == 0){
-		return showFiles(selectDir(actualDir));
+		return showFiles(selectDir(actualDir,dir1,dir2));
 	}else{
-		return showFiles(checkParameters(query,actualDir));
+		return showFiles(checkParameters(query,actualDir,dir1,dir2));
 	}
-	
 }
