@@ -1,8 +1,8 @@
 
 
-#include "type.h"
+#include "era.h"
 
-void substringType(char s[], char sub[], int p, int l) {
+void substringEra(char s[], char sub[], int p, int l) {
     int c = 0;
     
     while (c < l) {
@@ -12,7 +12,7 @@ void substringType(char s[], char sub[], int p, int l) {
     sub[c] = '\0';
 }
 
-char* selectDirType(char dir[]){
+char* selectDirEra(char dir[]){
 	
 	char *pathDir = ""; 
 	if(strcmp(dir,"A") == 0){
@@ -28,18 +28,18 @@ char* selectDirType(char dir[]){
 	return pathDir;
 }
 
-char* checkParametersType(char path[],char actualDir[]){
+char* checkParametersEra(char path[],char actualDir[]){
 	char* auxPath;
 	char subPath[strlen(path)];
 	if(strstr(path,"A:") != NULL){
 		auxPath = "./A";
-		substringType(path,subPath,8,strlen(path));
+		substringEra(path,subPath,7,strlen(path));
 	}else if(strstr(path,"B:") != NULL){
 		auxPath = "./B";
-		substringType(path,subPath,8,strlen(path));
+		substringEra(path,subPath,7,strlen(path));
 	}else{
-		auxPath = selectDirType(actualDir);
-		substringType(path,subPath,6,strlen(path));
+		auxPath = selectDirEra(actualDir);
+		substringEra(path,subPath,5,strlen(path));
 	}
 	char filename[128];
 	char filename1[128];
@@ -53,11 +53,11 @@ char* checkParametersType(char path[],char actualDir[]){
 	return final;
 }
 
-char* methodType(char dir[]){
+char* methodEra(char dir[]){
 	char rpath[255];
 	char ldir[255];
 	char lFinal[255];
-	strncpy(rpath, "cat ", sizeof(rpath));
+	strncpy(rpath, "rm ", sizeof(rpath));
     strncpy(ldir, dir, sizeof(ldir));
     strncpy(lFinal,rpath,sizeof(lFinal));
     strncat(lFinal,ldir,sizeof(lFinal));
@@ -66,11 +66,11 @@ char* methodType(char dir[]){
 	return afinal;
 }
 
-char* use_type(char query[],char actualDir[]){
+char* use_era(char query[],char actualDir[]){
 	if(strcmp(query,"TYPE") == 0){
-		return "cat ";
+		return "rm ";
 	}else{
-		return methodType(checkParametersType(query,actualDir));
+		return methodEra(checkParametersEra(query,actualDir));
 	}
 	
 }
