@@ -2,7 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+//Includes fork
+#include <signal.h>
+#include <sys/wait.h>
 
+//Includes library
 #include "lib/dir.h"
 #include "lib/type.h"
 #include "lib/era.h"
@@ -28,24 +32,56 @@ int main(){
 	strtok(fgets(query,255,stdin),"\n");
 	while(strcmp(query,"EXIT") != 0){
 		if(strstr(query,"DIR") != NULL){
-			char command[100];
-			sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
-			system(command);
+            if (fork() == 0) {
+			    char command[100];
+			    sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
+			    system(command);
+            } else {
+                wait(NULL);
+                kill(0,SIGTERM);
+            }
 		}else if(strstr(query,"TYPE") != NULL){
-			char command[100];
-			sprintf(command, "%s", use_type(query,actualDir));
-			system(command);
+            if (fork() == 0) {
+			    char command[100];
+			    sprintf(command, "%s", use_type(query,actualDir));
+    			system(command);
+            } else {
+                wait(NULL);
+                kill(0,SIGTERM);
+            }
 		}else if(strstr(query,"ERA") != NULL){
-			char command[100];
-			sprintf(command, "%s", use_era(query,actualDir));
-			system(command);
+            if (fork() == 0) {
+			    char command[100];
+			    sprintf(command, "%s", use_era(query,actualDir));
+			    system(command);
+            } else {
+                wait(NULL);
+                kill(0,SIGTERM);
+            }
+
 		}else if(strcmp(query,getDir(c1)) == 0){
-			sprintf(actualDir, "%c", c1);
+            if (fork() == 0) {
+    			sprintf(actualDir, "%c", c1);
+            } else {
+                wait(NULL);
+                kill(0,SIGTERM);
+            }
 		}else if(strcmp(query,getDir(c2)) == 0){
+            if (fork() == 0) {
 			sprintf(actualDir, "%c", c2);
+            } else {
+                wait(NULL);
+                kill(0,SIGTERM);
+            }
 		}else if(strcmp(query,"HELP") == 0){
-			system("cat lib/help.txt");
-        }else{
+            if (fork() == 0) {
+    			system("cat lib/help.txt");
+            } else {
+                wait(NULL);
+                kill(0,SIGTERM);
+            }
+        }
+        else{
 			printf("comando desconocido\n");
 			//printf("%s",query);
 		}
