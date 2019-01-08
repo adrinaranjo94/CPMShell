@@ -5,6 +5,7 @@
 //Includes fork
 #include <signal.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 //Includes library
 #include "lib/dir.h"
@@ -32,14 +33,15 @@ int main(){
 	strtok(fgets(query,255,stdin),"\n");
     int salida = 0;
 
-    int tuberia[2];	//Descriptor de la tubería
-	//tuberia[0] descriptor de lectura
-	//tuberia[1] descriptor de escritura
-    int mensaje = 0;
-
-    pipe(tuberia);//Crea la tuberia
+   
 
 	while(salida == 0){
+        int tuberia[2];	//Descriptor de la tubería
+	    //tuberia[0] descriptor de lectura
+	    //tuberia[1] descriptor de escritura
+        char mensaje[10] = "1";
+        pipe(tuberia);//Crea la tuberia
+
         if (fork() == 0) {
             //Leemos de consola la entrada
             printf("%s:> ",actualDir);
@@ -65,9 +67,10 @@ int main(){
                 sprintf(actualDir, "%c", c2);
             }else if(strcmp(query,"HELP") == 0){
                 system("cat lib/help.txt");
-            }else if(strcmp(query,"EXIT") != 0){
+            }else if(strcmp(query,"EXIT") == 0){
                 //TODO:
-                mensaje = 0;
+                //mensaje = "exit";
+                printf("PIPE");
                 close(tuberia[0]); //Cierro tubería de lectura
                 write(tuberia[1], mensaje, sizeof(mensaje));
                 close(tuberia[1]);
@@ -76,9 +79,11 @@ int main(){
                 //printf("%s",query);
             }
         } else {
+            printf("PAPA");
             close(tuberia[1]);
             wait(NULL);
             kill(0,SIGTERM);
+            printf("AHORA LEERE LA PIPE");
             int bytesleidos = read (tuberia[0], &mensaje, sizeof(mensaje));
             printf ("Bytes leidos: %d\n", bytesleidos);
             printf ("Mensaje: %s\n", mensaje);
