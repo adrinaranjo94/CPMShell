@@ -22,8 +22,8 @@ char* getDir(char dir);
 
 int main(){
     readConf();
-//printf("C1 %c",c1);
-//printf("C2 %c",c2);
+	//printf("C1 %c",c1);
+	//printf("C2 %c",c2);
 	char actualDir[2]; 
 	sprintf(actualDir, "%c", c1);
 	char query[255];
@@ -34,7 +34,7 @@ int main(){
 		if(strstr(query,"DIR") != NULL){
             if (fork() == 0) {
 			    char command[100];
-			    sprintf(command, "%s", use_dir(query,actualDir));
+			    sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
 			    system(command);
             } else {
                 wait(NULL);
@@ -43,7 +43,7 @@ int main(){
 		}else if(strstr(query,"TYPE") != NULL){
             if (fork() == 0) {
 			    char command[100];
-			    sprintf(command, "%s", use_type(query,actualDir));
+			    sprintf(command, "%s", use_type(query,actualDir,c1,c2));
     			system(command);
             } else {
                 wait(NULL);
