@@ -22,72 +22,68 @@ char* getDir(char dir);
 
 int main(){
     readConf();
-//printf("C1 %c",c1);
-//printf("C2 %c",c2);
+	//printf("C1 %c",c1);
+	//printf("C2 %c",c2);
 	char actualDir[2]; 
 	sprintf(actualDir, "%c", c1);
 	char query[255];
 	printf("%s:> ",actualDir);
 	
 	strtok(fgets(query,255,stdin),"\n");
-	while(strcmp(query,"EXIT") != 0){
-		if(strstr(query,"DIR") != NULL){
-            if (fork() == 0) {
-			    char command[100];
-			    sprintf(command, "%s", use_dir(query,actualDir));
-			    system(command);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
-		}else if(strstr(query,"TYPE") != NULL){
-            if (fork() == 0) {
-			    char command[100];
-			    sprintf(command, "%s", use_type(query,actualDir));
-    			system(command);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
-		}else if(strstr(query,"ERA") != NULL){
-            if (fork() == 0) {
-			    char command[100];
-			    sprintf(command, "%s", use_era(query,actualDir));
-			    system(command);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
+    int salida = 0;
 
-		}else if(strcmp(query,getDir(c1)) == 0){
-            if (fork() == 0) {
-    			sprintf(actualDir, "%c", c1);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
+    int tuberia[2];	//Descriptor de la tubería
+	//tuberia[0] descriptor de lectura
+	//tuberia[1] descriptor de escritura
+    int mensaje = 0;
+
+    pipe(tuberia);//Crea la tuberia
+
+	while(salida == 0){
+        if (fork() == 0) {
+            //Leemos de consola la entrada
+            printf("%s:> ",actualDir);
+		    strtok(fgets(query,255,stdin),"\n");
+
+            //Comprobamos que entra
+            if(strstr(query,"DIR") != NULL){
+                char command[100];
+                sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
+                system(command);
+            }else if(strstr(query,"TYPE") != NULL){
+                char command[100];
+                sprintf(command, "%s", use_type(query,actualDir,c1,c2));
+                system(command);
+            }else if(strstr(query,"ERA") != NULL){
+                char command[100];
+                sprintf(command, "%s", use_era(query,actualDir));
+                system(command);
+            }else if(strcmp(query,getDir(c1)) == 0){
+                //TODO:
+                sprintf(actualDir, "%c", c1);
+            }else if(strcmp(query,getDir(c2)) == 0){
+                sprintf(actualDir, "%c", c2);
+            }else if(strcmp(query,"HELP") == 0){
+                system("cat lib/help.txt");
+            }else if(strcmp(query,"EXIT") != 0){
+                //TODO:
+                mensaje = 0;
+                close(tuberia[0]); //Cierro tubería de lectura
+                write(tuberia[1], mensaje, sizeof(mensaje));
+                close(tuberia[1]);
+            }else{
+                printf("comando desconocido\n");
+                //printf("%s",query);
             }
-		}else if(strcmp(query,getDir(c2)) == 0){
-            if (fork() == 0) {
-			sprintf(actualDir, "%c", c2);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
-		}else if(strcmp(query,"HELP") == 0){
-            if (fork() == 0) {
-    			system("cat lib/help.txt");
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
+        } else {
+            close(tuberia[1]);
+            wait(NULL);
+            kill(0,SIGTERM);
+            int bytesleidos = read (tuberia[0], &mensaje, sizeof(mensaje));
+            printf ("Bytes leidos: %d\n", bytesleidos);
+            printf ("Mensaje: %s\n", mensaje);
+            close (tuberia[0]);
         }
-        else{
-			printf("comando desconocido\n");
-			//printf("%s",query);
-		}
-		printf("%s:> ",actualDir);
-		
-		strtok(fgets(query,255,stdin),"\n");
 	}
 	return 0;
 }
