@@ -1,5 +1,6 @@
-HELP
+DIR
+B:
+DIR
+A:
 DIR
 HELP
-COPY aTest.txt B:
-DIR B

@@ -146,21 +146,27 @@ void batchZone(char* nameFile){
     char a[1000][255];//MEJORAR CON MALLOC
 
     int i = 0;
-
-    while (i >= 0){
+    int iT = 0;
+    int salir = 0;
+    while (salir == 0){
         if(fgets(line,100,file) == NULL){
-            fclose(file);
             strcpy(a[i],"EXIT");
-            i = -1;            
+            salir = 1;
         }else{
-            strcpy(a[i],strtok(line,"\n"));
+            strncpy(a[i],line,strlen(line)-1);
             i++;       
         }
     }
+    /*
+    for(int j = 0; j <=i ; j++){
+        printf("Q:%s\n",a[j]);
+    }
+    */
+    fclose(file);
  
-    for(int j = 0; j < strlen(*a); j++){
-        strcpy(query,a[j]);
-        printf("QUE: %s",query);
+    for(int j = 0; j <=i ; j++){
+
+
         int fd[2];
         int val = 0;
 
@@ -169,7 +175,7 @@ void batchZone(char* nameFile){
         pid_t pid = fork();
 
         if (pid == 0) {
-        //Leemos de consola la entrada
+            strcpy(query,a[j]);
             val = 0;
 		    if(strstr(query,"DIR") != NULL){
 		        char command[100];
