@@ -87,28 +87,46 @@ int main(){
 
             exit(0);
         }else{
-         wait(NULL);
-             // parent: reading only, so close the write-descriptor
-        close(fd[1]);
+             wait(NULL);
+                 // parent: reading only, so close the write-descriptor
+            close(fd[1]);
 
-        // now read the data (will block)
-        read(fd[0], &val, sizeof(val));
+            // now read the data (will block)
+            read(fd[0], &val, sizeof(val));
 
 
-        // close the read-descriptor
-        switch(val){
-            case -1: salida = -1; break;
-            case 1://TODO
-                break;
-            case 2://TODO
-                break;
-            
-        }
+            // close the read-descriptor
+            switch(val){
+                case -1: salida = -1; break;
+                case 1://TODO
+                    break;
+                case 2://TODO
+                    break;
+                
+            }
         close(fd[0]);
         //salida = 0;
         }
 	}
 	return 0;
+}
+
+void test(char* fileName){
+    char line[100];
+    FILE* file = fopen(fileName,"r");
+    int salida = 0;    
+    while(salida != -1){
+        if(fgets(file,100,line) == NULL){
+            fclose();
+            line = "EXIT";
+        }else{
+            line = strtok(line,"\n");
+        }
+
+        //TODO FORKEO
+    }
+    
+
 }
 
 char* getDir(char dir){

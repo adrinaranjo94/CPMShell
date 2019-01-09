@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 //Includes fork
-#include <signal.h>
+#include <unistd.h>
 #include <sys/wait.h>
 
 //Includes library
@@ -21,108 +21,229 @@ char auxDir[4];
 void readConf();
 
 char* getDir(char dir);
+void normalZone();
+void batchZone(char* nameFile);
 
+int main(int argc, char* argv[]){
 
-int main(){
+    if(argc == 2){
+        batchZone(argv[1]);
+    }else{
+        normalZone();
+    }
+	return 0;
+}
+
+void normalZone(){
     readConf();
 	//printf("C1 %c",c1);
 	//printf("C2 %c",c2);
 	char actualDir[2]; 
 	sprintf(actualDir, "%c", c1);
 	char query[255];
-	printf("%s:> ",actualDir);
-	
-	strtok(fgets(query,255,stdin),"\n");
-	while(strcmp(query,"EXIT") != 0){
-		if(strstr(query,"DIR") != NULL){
-            if (fork() == 0) {
-			    char command[100];
-			    sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
-			    system(command);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
-		}else if(strstr(query,"TYPE") != NULL){
-            if (fork() == 0) {
-			    char command[100];
-			    sprintf(command, "%s", use_type(query,actualDir,c1,c2));
-    			system(command);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
-		}else if(strstr(query,"ERA") != NULL){
-            if (fork() == 0) {
-			    char command[100];
-			    sprintf(command, "%s", use_era(query,actualDir,c1,c2));
-			    system(command);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
 
-		}else if(strstr(query,"COPY") != NULL){
-            if (fork() == 0) {
-			    char command[100];
-			    sprintf(command, "%s", use_copy(query,actualDir,c1,c2));
-			    system(command);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
+    int salida = 0;
 
-		}else if(strstr(query,"REN") != NULL){
-            if (fork() == 0) {
-			    char command[100];
-			    sprintf(command, "%s", use_ren(query,actualDir,c1,c2));
-			    system(command);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
+	while(salida != -1){//START WHILE
+        int fd[2];
+        int val = 0;
 
-		}else if(strstr(query,"RUN") != NULL){
-            if (fork() == 0) {
-			    char command[100];
-			    sprintf(command, "%s", use_run(query,actualDir,c1,c2));
-			    system(command);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
+        // create pipe descriptors
+        pipe(fd);
+        pid_t pid = fork();
 
-		}else if(strcmp(query,getDir(c1)) == 0){
-            if (fork() == 0) {
-    			sprintf(actualDir, "%c", c1);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
+        if (pid == 0) { // (HIJO)
+                     
+        //Leemos de consola la entrada
+            printf("%s:> ",actualDir);
+	        strtok(fgets(query,255,stdin),"\n");
+            val = 0;
+		    if(strstr(query,"DIR") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
+		        system(command);
+		    }else if(strstr(query,"TYPE") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_type(query,actualDir,c1,c2));
+			    system(command);
+		    }else if(strstr(query,"ERA") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_era(query,actualDir,c1,c2));
+		        system(command);
+        	}else if(strstr(query,"COPY") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_copy(query,actualDir,c1,c2));
+		        system(command);
+		    }else if(strstr(query,"REN") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_ren(query,actualDir,c1,c2));
+		        system(command);
+		    }else if(strstr(query,"RUN") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_run(query,actualDir,c1,c2));
+		        system(command);
+		    }else if(strcmp(query,getDir(c1)) == 0){
+       			
+                val = 1;
+		    }else if(strcmp(query,getDir(c2)) == 0){
+			    
+                val = 2;
+		    }else if(strcmp(query,"HELP") == 0){
+			    system("cat lib/help.txt");
+            }else if(strcmp(query,"EXIT") == 0){
+                val = -1;
+            }else{
+			    printf("comando desconocido\n");
+			    //printf("%s",query);
+		    }
+            close(fd[0]);
+            // send the value on the write-descriptor.
+            write(fd[1], &val, sizeof(val));
+
+
+            // close the write descriptor
+            close(fd[1]);
+
+
+            exit(0);
+        }else{//END IF (PADRE)
+             wait(NULL);
+                 // parent: reading only, so close the write-descriptor
+            close(fd[1]);
+
+            // now read the data (will block)
+            read(fd[0], &val, sizeof(val));
+
+
+            // close the read-descriptor
+            switch(val){
+                case -1: salida = -1; break;
+                case 1://TODO
+                    sprintf(actualDir, "%c", c1);
+                    break;
+                case 2://TODO
+                    sprintf(actualDir, "%c", c2);
+                    break;
+                
             }
-		}else if(strcmp(query,getDir(c2)) == 0){
-            if (fork() == 0) {
-			sprintf(actualDir, "%c", c2);
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
-		}else if(strcmp(query,"HELP") == 0){
-            if (fork() == 0) {
-    			system("cat lib/help.txt");
-            } else {
-                wait(NULL);
-                kill(0,SIGTERM);
-            }
+            close(fd[0]);
+        }//END IF
+	}//END WHILE
+}
+
+void batchZone(char* nameFile){
+    readConf();
+	//printf("C1 %c",c1);
+	//printf("C2 %c",c2);
+	char actualDir[2]; 
+	sprintf(actualDir, "%c", c1);
+    //printf("NAME: %s", nameFile);
+    char query[255];
+    char line[100];
+    FILE* file = fopen(nameFile,"r");
+    int salida = 0;
+    
+    char a[1000][255];//MEJORAR CON MALLOC
+
+    int i = 0;
+
+    while (i >= 0){
+        if(fgets(line,100,file) == NULL){
+            fclose(file);
+            strcpy(a[i],"EXIT");
+            i = -1;            
+        }else{
+            strcpy(a[i],strtok(line,"\n"));
+            i++;       
         }
-        else{
-			printf("comando desconocido\n");
-			//printf("%s",query);
-		}
-		printf("%s:> ",actualDir);
-		
-		strtok(fgets(query,255,stdin),"\n");
-	}
-	return 0;
+    }
+ 
+    for(int j = 0; j < strlen(*a); j++){
+        strcpy(query,a[j]);
+        printf("QUE: %s",query);
+        int fd[2];
+        int val = 0;
+
+        // create pipe descriptors
+        pipe(fd);
+        pid_t pid = fork();
+
+        if (pid == 0) {
+        //Leemos de consola la entrada
+            val = 0;
+		    if(strstr(query,"DIR") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
+		        system(command);
+		    }else if(strstr(query,"TYPE") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_type(query,actualDir,c1,c2));
+			    system(command);
+		    }else if(strstr(query,"ERA") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_era(query,actualDir,c1,c2));
+		        system(command);
+        	}else if(strstr(query,"COPY") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_copy(query,actualDir,c1,c2));
+		        system(command);
+		    }else if(strstr(query,"REN") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_ren(query,actualDir,c1,c2));
+		        system(command);
+		    }else if(strstr(query,"RUN") != NULL){
+		        char command[100];
+		        sprintf(command, "%s", use_run(query,actualDir,c1,c2));
+		        system(command);
+		    }else if(strcmp(query,getDir(c1)) == 0){
+       			
+                val = 1;
+		    }else if(strcmp(query,getDir(c2)) == 0){
+			    
+                val = 2;
+		    }else if(strcmp(query,"HELP") == 0){
+			    system("cat lib/help.txt");
+            }else if(strcmp(query,"EXIT") == 0){
+
+                val = -1;
+            }else{
+			    printf("comando desconocido\n");
+			    //printf("%s",query);
+		    }
+            close(fd[0]);
+            // send the value on the write-descriptor.
+            write(fd[1], &val, sizeof(val));
+            // close the write descriptor
+            close(fd[1]);
+
+
+            exit(0);
+        }else{//END IF
+             wait(NULL);
+                 // parent: reading only, so close the write-descriptor
+            close(fd[1]);
+
+            // now read the data (will block)
+            read(fd[0], &val, sizeof(val));
+
+
+            // close the read-descriptor
+            switch(val){
+                case -1: salida = -1; break;
+                case 1://TODO
+                    sprintf(actualDir, "%c", c1);
+                    break;
+                case 2://TODO
+                    sprintf(actualDir, "%c", c2);
+                    break;
+                
+            }
+            close(fd[0]);
+            //salida = 0;
+        }
+
+    }
+
 }
 
 char* getDir(char dir){

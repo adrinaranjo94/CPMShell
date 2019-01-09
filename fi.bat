@@ -1,0 +1,5 @@
+HELP
+DIR
+HELP
+COPY aTest.txt B:
+DIR B
