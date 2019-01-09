@@ -49,5 +49,5 @@ gcc cpmshell.o lib/dir.o lib/type.o lib/era.o lib/copy.o lib/ren.o lib/run.o -o 
 
 * Para poder ejecutar un .bat con nuestro terminal
 ```
-
+./cpmshell archivo.bat
 ```
