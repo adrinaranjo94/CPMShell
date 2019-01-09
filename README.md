@@ -20,7 +20,8 @@ PROYECTO REALIZADO POR:
 ```
 
 # Inicialización del proyecto 
-* Abrimos un terminal y nos vamos a la carpeta raíz del proyecto.
+
+Abrimos un terminal y nos vamos a la carpeta raíz del proyecto.
 
 * Compilamos las librerías con los siguientes comandos
 ```
@@ -50,4 +51,21 @@ gcc cpmshell.o lib/dir.o lib/type.o lib/era.o lib/copy.o lib/ren.o lib/run.o -o 
 * Para poder ejecutar un .bat con nuestro terminal
 ```
 ./cpmshell archivo.bat
+```
+
+# Modificar configuración directorios
+
+Para modificar el alias de las unidades de los directorios
+
+* Editamos el archivo de configuración
+```
+nano lib/.cmpconfig.txt
+```
+La primera linea corresponde con la carpeta A
+La segunda linea corresponde con la carpeta B
+
+* Ejemplo
+```
+S  ---> S: ----> ./A
+P  ---> P: ----> ./B
 ```
