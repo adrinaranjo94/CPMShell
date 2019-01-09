@@ -4,6 +4,7 @@
 
 char auxDir[4];
 
+//Metodo para remplazar cadenas de caracteres de un string por otras indicadas como parametro.
 void substring(char s[], char sub[], int p, int l) {
     int c = 0;
     
@@ -14,7 +15,7 @@ void substring(char s[], char sub[], int p, int l) {
     sub[c] = '\0';
 }
 
-
+//Metodo para devolver el nombre de la unidad
 char* getDirDir(char dir){
 	sprintf(auxDir,"%c",dir);
 	
@@ -22,6 +23,7 @@ char* getDirDir(char dir){
 	
 }
 
+//Metodo para devolver el nombre de la unidad seguido de :
 char* getDirDirFull(char dir){
 	sprintf(auxDir,"%c:",dir);
 	
@@ -29,6 +31,7 @@ char* getDirDirFull(char dir){
 	
 }
 
+//Metodo para devolver el directorio en funcion del alias de la unidad
 char* selectDir(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
@@ -45,6 +48,7 @@ char* selectDir(char dir[],char dir1, char dir2){
 	return pathDir;
 }
 
+//Metodo para crear los parametros comando a ejecutar
 char* checkParameters(char path[],char actualDir[],char dir1, char dir2){
 	char* auxPath;
 	char subPath[strlen(path)];
@@ -72,6 +76,7 @@ char* checkParameters(char path[],char actualDir[],char dir1, char dir2){
 	return final;
 }
 
+//Metodo para crear el comando final uniendo los parametros con el comando a ejecutar
 char* showFiles(char dir[]){
 	char rpath[255];
 	char ldir[255];
@@ -85,6 +90,7 @@ char* showFiles(char dir[]){
 	return afinal;
 }
 
+//Metodo inicial de la libreria para devolver el comando final
 char* use_dir(char query[],char actualDir[],char dir1, char dir2){
 	if(strcmp(query,"DIR") == 0){
 		return showFiles(selectDir(actualDir,dir1,dir2));

@@ -4,6 +4,7 @@
 
 char auxDir[4];
 
+//Metodo para remplazar cadenas de caracteres de un string por otras indicadas como parametro.
 void substringRun(char s[], char sub[], int p, int l) {
     int c = 0;
     
@@ -14,6 +15,7 @@ void substringRun(char s[], char sub[], int p, int l) {
     sub[c] = '\0';
 }
 
+//Metodo para devolver el nombre de la unidad
 char* getDirRun(char dir){
 	sprintf(auxDir,"%c",dir);
 	
@@ -21,6 +23,7 @@ char* getDirRun(char dir){
 	
 }
 
+//Metodo para devolver el nombre de la unidad seguido de :
 char* getDirRunFull(char dir){
 	sprintf(auxDir,"%c:",dir);
 	
@@ -28,6 +31,7 @@ char* getDirRunFull(char dir){
 	
 }
 
+//Metodo para devolver el directorio en funcion del alias de la unidad
 char* selectDirRun(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
@@ -44,6 +48,7 @@ char* selectDirRun(char dir[],char dir1, char dir2){
 	return pathDir;
 }
 
+//Metodo para crear los parametros comando a ejecutar
 char* checkParametersRun(char path[],char actualDir[],char dir1, char dir2){
 	char* auxPath;
 	char subPath[strlen(path)];
@@ -69,6 +74,7 @@ char* checkParametersRun(char path[],char actualDir[],char dir1, char dir2){
 	return final;
 }
 
+//Metodo para crear el comando final uniendo los parametros con el comando a ejecutar
 char* methodRun(char dir[]){
 	char rpath[255];
 	char ldir[255];
@@ -90,10 +96,10 @@ char* methodRun(char dir[]){
 		substringRun(dir,auxlDirComplete,5,strlen(dir));
 		sprintf(finallDirComplete,"./%s;cd ..",auxlDirComplete);
 		
-		printf("Dir total %s\n",dir);
-		printf("Aux dir %s\n",auxDirFull);
-		printf("%s\n",finalDirFull);
-		printf("%s\n",finallDirComplete);
+		//printf("Dir total %s\n",dir);
+		//printf("Aux dir %s\n",auxDirFull);
+		//printf("%s\n",finalDirFull);
+		//printf("%s\n",finallDirComplete);
 		strncpy(rpath, finalDirFull, sizeof(rpath));
 		strncpy(ldir, finallDirComplete, sizeof(ldir));
 		strncpy(lFinal,rpath,sizeof(lFinal));
@@ -104,9 +110,10 @@ char* methodRun(char dir[]){
 	return afinal;
 }
 
+//Metodo inicial de la libreria para devolver el comando final
 char* use_run(char query[],char actualDir[],char dir1, char dir2){
 	if(strcmp(query,"RUN") == 0){
-		return "echo Debes indicar el archivo para utilizar este método.\nSi deseas sabes mas informacion sobre como utilizar el metodo introduce el comando HELP";
+		return "echo Debes indicar el archivo para utilizar este método.\nSi deseas saber mas informacion sobre el metodo introduce el comando HELP";
 	}else{
 		return methodRun(checkParametersRun(query,actualDir,dir1,dir2));
 	}

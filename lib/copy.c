@@ -6,6 +6,7 @@
 
 char auxDir[4];
 
+//Metodo para remplazar cadenas de caracteres de un string por otras indicadas como parametro.
 char *replaceWordCopy(const char *s, const char *oldW,const char *newW) { 
     char *result; 
     int i, cnt = 0; 
@@ -39,6 +40,7 @@ char *replaceWordCopy(const char *s, const char *oldW,const char *newW) {
     return result; 
 } 
 
+//Metodo para devolver el nombre de la unidad
 char* getDirCopy(char dir){
 	sprintf(auxDir,"%c",dir);
 	
@@ -46,6 +48,7 @@ char* getDirCopy(char dir){
 	
 }
 
+//Metodo para devolver el nombre de la unidad seguido de :
 char* getDirCopyFull(char dir){
 	sprintf(auxDir,"%c:",dir);
 	
@@ -53,6 +56,7 @@ char* getDirCopyFull(char dir){
 	
 }
 
+//Metodo para devolver el nombre de la unidad con espacio y :
 char* getDirCopySpaceFull(char dir){
 	sprintf(auxDir," %c:",dir);
 	
@@ -60,6 +64,7 @@ char* getDirCopySpaceFull(char dir){
 	
 }
 
+//Metodo para devolver el directorio en funcion del alias de la unidad
 char* selectDirCopy(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
@@ -76,6 +81,7 @@ char* selectDirCopy(char dir[],char dir1, char dir2){
 	return pathDir;
 }
 
+//Metodo para devolver el segundo directorio en funcion del alias de la unidad
 char* selectSecondDirCopy(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
@@ -92,6 +98,8 @@ char* selectSecondDirCopy(char dir[],char dir1, char dir2){
 	return pathDir;
 }
 
+
+//Metodo para crear los parametros comando a ejecutar
 char* checkParametersCopy(char path[],char actualDir[],char dir1, char dir2){
 	char* auxPath;
 	char subPath[strlen(path)];
@@ -151,6 +159,7 @@ char* checkParametersCopy(char path[],char actualDir[],char dir1, char dir2){
 	return final;
 }
 
+//Metodo para crear el comando final uniendo los parametros con el comando a ejecutar
 char* methodCopy(char dir[]){
 	char rpath[255];
 	char ldir[255];
@@ -164,9 +173,10 @@ char* methodCopy(char dir[]){
 	return afinal;
 }
 
+//Metodo inicial de la libreria para devolver el comando final
 char* use_copy(char query[],char actualDir[],char dir1, char dir2){
 	if(strcmp(query,"COPY") == 0){
-		return "cp ";
+		return "echo Para usar el comando COPY debes introducir dos parametros.\nSi deseas saber mas informacion sobre el metodo introduce el comando HELP";
 	}else{
 		return methodCopy(checkParametersCopy(query,actualDir,dir1,dir2));
 	}

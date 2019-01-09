@@ -6,6 +6,7 @@
 
 char auxDir[4];
 
+//Metodo para remplazar cadenas de caracteres de un string por otras indicadas como parametro.
 char *replaceWordRen(const char *s, const char *oldW,const char *newW) { 
     char *result; 
     int i, cnt = 0; 
@@ -39,6 +40,7 @@ char *replaceWordRen(const char *s, const char *oldW,const char *newW) {
     return result; 
 } 
 
+//Metodo para devolver el nombre de la unidad
 char* getDirRen(char dir){
 	sprintf(auxDir,"%c",dir);
 	
@@ -46,6 +48,7 @@ char* getDirRen(char dir){
 	
 }
 
+//Metodo para devolver el nombre de la unidad seguido de :
 char* getDirRenFull(char dir){
 	sprintf(auxDir,"%c:",dir);
 	
@@ -53,6 +56,7 @@ char* getDirRenFull(char dir){
 	
 }
 
+//Metodo para devolver el nombre de la unidad con espacio y :
 char* getDirRenSpaceFull(char dir){
 	sprintf(auxDir," %c:",dir);
 	
@@ -60,6 +64,7 @@ char* getDirRenSpaceFull(char dir){
 	
 }
 
+//Metodo para devolver el directorio en funcion del alias de la unidad
 char* selectDirRen(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
@@ -76,6 +81,7 @@ char* selectDirRen(char dir[],char dir1, char dir2){
 	return pathDir;
 }
 
+//Metodo para devolver el segundo directorio en funcion del alias de la unidad
 char* selectSecondDirRen(char dir[],char dir1, char dir2){
 	
 	char *pathDir = ""; 
@@ -92,6 +98,7 @@ char* selectSecondDirRen(char dir[],char dir1, char dir2){
 	return pathDir;
 }
 
+//Metodo para crear los parametros comando a ejecutar
 char* checkParametersRen(char path[],char actualDir[],char dir1, char dir2){
 	char* auxPath;
 	char subPath[strlen(path)];
@@ -151,6 +158,7 @@ char* checkParametersRen(char path[],char actualDir[],char dir1, char dir2){
 	return final;
 }
 
+//Metodo para crear el comando final uniendo los parametros con el comando a ejecutar
 char* methodRen(char dir[]){
 	char rpath[255];
 	char ldir[255];
@@ -164,9 +172,10 @@ char* methodRen(char dir[]){
 	return afinal;
 }
 
+//Metodo inicial de la libreria para devolver el comando final
 char* use_ren(char query[],char actualDir[],char dir1, char dir2){
 	if(strcmp(query,"REN") == 0){
-		return "mv ";
+		return "echo Para usar el comando REN debes introducir dos parametros.\nSi deseas saber mas informacion sobre el metodo introduce el comando HELP";
 	}else{
 		return methodRen(checkParametersRen(query,actualDir,dir1,dir2));
 	}
