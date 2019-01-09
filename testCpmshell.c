@@ -3,9 +3,10 @@
 #include <stdlib.h>
 
 //Includes fork
-#include <signal.h>
-#include <sys/wait.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+
 
 //Includes library
 #include "lib/dir.h"
@@ -14,7 +15,7 @@
 
 char c1 = ' ';
 char c2 = ' ';
-char auxDir[3];
+char auxDir[4];
 
 void readConf();
 
@@ -28,66 +29,83 @@ int main(){
 	char actualDir[2]; 
 	sprintf(actualDir, "%c", c1);
 	char query[255];
-	printf("%s:> ",actualDir);
 	
-	strtok(fgets(query,255,stdin),"\n");
-    int salida = 0;
+    int salida = 1;
+    
 
-   
+    
+	while(salida != -1){
+    int fd[2];
+    int val = 0;
 
-	while(salida == 0){
-        int tuberia[2];	//Descriptor de la tubería
-	    //tuberia[0] descriptor de lectura
-	    //tuberia[1] descriptor de escritura
-        char mensaje[10] = "1";
-        pipe(tuberia);//Crea la tuberia
+    // create pipe descriptors
+    pipe(fd);
+        pid_t pid = fork();
+        if (pid == 0) {
+                     
+        //Leemos de consola la entrada
+        printf("%s:> ",actualDir);
+	    strtok(fgets(query,255,stdin),"\n");
 
-        if (fork() == 0) {
-            //Leemos de consola la entrada
-            printf("%s:> ",actualDir);
-		    strtok(fgets(query,255,stdin),"\n");
+        //Comprobamos que entra
+        if(strstr(query,"DIR") != NULL){
+            char command[100];
+            sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
+            system(command);
+        }else if(strstr(query,"TYPE") != NULL){
+            char command[100];
+            sprintf(command, "%s", use_type(query,actualDir,c1,c2));
+            system(command);
+        }else if(strstr(query,"ERA") != NULL){
+            char command[100];
+		    sprintf(command, "%s", use_era(query,actualDir,c1,c2));
+            system(command);
+        }else if(strcmp(query,getDir(c1)) == 0){
+            //TODO:
+            sprintf(actualDir, "%c", c1);
+        }else if(strcmp(query,getDir(c2)) == 0){
+            sprintf(actualDir, "%c", c2);
+        }else if(strcmp(query,"HELP") == 0){
+            system("cat lib/help.txt");
+        }else if(strcmp(query,"EXIT") == 0){
+            //TODO:
+            //mensaje = "exit";
+            close(fd[0]);
 
-            //Comprobamos que entra
-            if(strstr(query,"DIR") != NULL){
-                char command[100];
-                sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
-                system(command);
-            }else if(strstr(query,"TYPE") != NULL){
-                char command[100];
-                sprintf(command, "%s", use_type(query,actualDir,c1,c2));
-                system(command);
-            }else if(strstr(query,"ERA") != NULL){
-                char command[100];
-			    sprintf(command, "%s", use_era(query,actualDir,c1,c2));
-                system(command);
-            }else if(strcmp(query,getDir(c1)) == 0){
-                //TODO:
-                sprintf(actualDir, "%c", c1);
-            }else if(strcmp(query,getDir(c2)) == 0){
-                sprintf(actualDir, "%c", c2);
-            }else if(strcmp(query,"HELP") == 0){
-                system("cat lib/help.txt");
-            }else if(strcmp(query,"EXIT") == 0){
-                //TODO:
-                //mensaje = "exit";
-                printf("PIPE");
-                close(tuberia[0]); //Cierro tubería de lectura
-                write(tuberia[1], mensaje, sizeof(mensaje));
-                close(tuberia[1]);
-            }else{
-                printf("comando desconocido\n");
-                //printf("%s",query);
-            }
-        } else {
-            printf("PAPA");
-            close(tuberia[1]);
-            wait(NULL);
-            kill(0,SIGTERM);
-            printf("AHORA LEERE LA PIPE");
-            int bytesleidos = read (tuberia[0], &mensaje, sizeof(mensaje));
-            printf ("Bytes leidos: %d\n", bytesleidos);
-            printf ("Mensaje: %s\n", mensaje);
-            close (tuberia[0]);
+        // send the value on the write-descriptor.
+            val = -1;
+            write(fd[1], &val, sizeof(val));
+            printf("child(%d) send value: %d\n", getpid(), val);
+
+            // close the write descriptor
+            close(fd[1]);
+                printf("parent(%d) received value: %d\n", getpid(), val);        
+        }else{
+            printf("comando desconocido\n");
+            //printf("%s",query);
+        }
+
+            exit(0);
+        }else{
+         wait(NULL);
+             // parent: reading only, so close the write-descriptor
+        close(fd[1]);
+
+        // now read the data (will block)
+        read(fd[0], &val, sizeof(val));
+
+
+        // close the read-descriptor
+        switch(val){
+            case -1: salida = -1; break;
+            case 1://TODO
+                break;
+            case 2://TODO
+                break;
+            
+        }
+        close(fd[0]);
+        //salida = 0;
         }
 	}
 	return 0;
