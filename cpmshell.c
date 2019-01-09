@@ -12,6 +12,7 @@
 #include "lib/era.h"
 #include "lib/copy.h"
 #include "lib/ren.h"
+#include "lib/run.h"
 
 char c1 = ' ';
 char c2 = ' ';
@@ -75,6 +76,16 @@ int main(){
             if (fork() == 0) {
 			    char command[100];
 			    sprintf(command, "%s", use_ren(query,actualDir,c1,c2));
+			    system(command);
+            } else {
+                wait(NULL);
+                kill(0,SIGTERM);
+            }
+
+		}else if(strstr(query,"RUN") != NULL){
+            if (fork() == 0) {
+			    char command[100];
+			    sprintf(command, "%s", use_run(query,actualDir,c1,c2));
 			    system(command);
             } else {
                 wait(NULL);
