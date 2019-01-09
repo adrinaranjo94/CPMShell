@@ -25,7 +25,7 @@ void normalZone();
 void batchZone(char* nameFile);
 
 int main(int argc, char* argv[]){
-
+    //Detectamos si vienen archivos en los argumentos o si es una ejecucion normal
     if(argc == 2){
         batchZone(argv[1]);
     }else{
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
     }
 	return 0;
 }
-
+//Ejecucion normal
 void normalZone(){
     readConf();
 	//printf("C1 %c",c1);
@@ -177,6 +177,7 @@ void batchZone(char* nameFile){
         if (pid == 0) {
             strcpy(query,a[j]);
             val = 0;
+            //LLAMADAS A LAS FUNCIONES DE LAS LIBRERIAS
 		    if(strstr(query,"DIR") != NULL){
 		        char command[100];
 		        sprintf(command, "%s", use_dir(query,actualDir,c1,c2));
@@ -258,7 +259,7 @@ char* getDir(char dir){
 	return auxDir;
 	
 }
-
+//leemos la configuracion del archivo oculto con las rutas relativas de los archivos
 void readConf(){
     FILE * fp;
     fp = fopen("lib/.cmpconfig.txt", "r");
