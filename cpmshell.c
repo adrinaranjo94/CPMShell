@@ -115,7 +115,6 @@ void normalZone(){
             read(fd[0], &val, sizeof(val));
 
 
-            // close the read-descriptor
             switch(val){
                 case -1: salida = -1; break;
                 case 1://TODO
@@ -126,6 +125,7 @@ void normalZone(){
                     break;
                 
             }
+            // close the read-descriptor
             close(fd[0]);
         }//END IF
 	}//END WHILE
@@ -148,7 +148,7 @@ void batchZone(char* nameFile){
     int i = 0;
     int iT = 0;
     int salir = 0;
-    while (salir == 0){
+    while (salir == 0){ //Se podria cambiar por EOF
         if(fgets(line,100,file) == NULL){
             strcpy(a[i],"EXIT");
             salir = 1;
